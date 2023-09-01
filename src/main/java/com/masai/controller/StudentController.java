@@ -26,7 +26,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @Controller
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://student.com")
 public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
