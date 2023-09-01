@@ -30,7 +30,9 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/webapp/imagedata";
+    private static final String uploadDirectory = System.getProperty("user.dir") + "/src/main/webapp/imagedata";
+
+    private static final String STUDENT_NOT_FOUND_MESSAGE = "Student not found with id: ";
 
     @PostMapping("/students")
     @ResponseBody
@@ -61,7 +63,7 @@ public class StudentController {
     public ResponseEntity<Resource> getProfilePic(@PathVariable Long id) {
         // Fetch the student from the repository by ID
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(STUDENT_NOT_FOUND_MESSAGE + id));
 
         // Load the profile picture file
         Path imagePath = Paths.get(uploadDirectory, student.getProfilePic());
@@ -87,7 +89,7 @@ public class StudentController {
     public ResponseEntity<Student> getStudentDetails(@PathVariable Long id) {
         // Fetch the student from the repository by ID
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(STUDENT_NOT_FOUND_MESSAGE + id));
 
 
         HttpHeaders headers = new HttpHeaders();
@@ -109,7 +111,7 @@ public class StudentController {
     public Student getStudentByRollNo(@PathVariable BigDecimal rollNo) {
         // Fetch the student from the repository by roll number
         Student student = (Student) studentRepository.findByRollNo(rollNo)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with roll number: " + rollNo));
+                .orElseThrow(() -> new ResourceNotFoundException(STUDENT_NOT_FOUND_MESSAGE + rollNo));
 
 
         return student;
@@ -123,7 +125,7 @@ public class StudentController {
             @RequestParam(value = "profilePic", required = false) MultipartFile profilePic) throws IOException {
         // Fetch the student from the repository by ID
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(STUDENT_NOT_FOUND_MESSAGE + id));
 
         // Update the student's details
         student.setName(updatedStudent.getName());
