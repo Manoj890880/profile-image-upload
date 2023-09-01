@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.masai</groupId>
-	<artifactId>StudentApp-4</artifactId>
+	<artifactId>Profile-Image</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>StudentApp-4</name>
 	<description>A Basic Student Management App</description>
