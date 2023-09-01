@@ -30,7 +30,7 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    private static final String uploadDirectory = System.getProperty("user.dir") + "/src/main/webapp/imagedata";
+    private static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/webapp/imagedata";
 
     private static final String STUDENT_NOT_FOUND_MESSAGE = "Student not found with id: ";
 
@@ -44,7 +44,7 @@ public class StudentController {
         String uniqueFilename = timestamp + "_" + originalFilename;
 
         // Save the image file
-        Path fileNameAndPath = Paths.get(uploadDirectory, uniqueFilename);
+        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, uniqueFilename);
         try {
             Files.write(fileNameAndPath, file.getBytes());
         } catch (IOException e) {
@@ -66,7 +66,7 @@ public class StudentController {
                 .orElseThrow(() -> new ResourceNotFoundException(STUDENT_NOT_FOUND_MESSAGE + id));
 
         // Load the profile picture file
-        Path imagePath = Paths.get(uploadDirectory, student.getProfilePic());
+        Path imagePath = Paths.get(UPLOAD_DIRECTORY, student.getProfilePic());
         Resource resource = new FileSystemResource(imagePath.toFile());
 
         // Determine the content type based on the file extension
@@ -110,11 +110,9 @@ public class StudentController {
     @ResponseBody
     public Student getStudentByRollNo(@PathVariable BigDecimal rollNo) {
         // Fetch the student from the repository by roll number
-        Student student = (Student) studentRepository.findByRollNo(rollNo)
+        return (Student) studentRepository.findByRollNo(rollNo)
                 .orElseThrow(() -> new ResourceNotFoundException(STUDENT_NOT_FOUND_MESSAGE + rollNo));
 
-
-        return student;
     }
 
     @PutMapping("/students/{id}")
@@ -139,7 +137,7 @@ public class StudentController {
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
             String uniqueFilename = timestamp + "_" + originalFilename;
 
-            Path fileNameAndPath = Paths.get(uploadDirectory, uniqueFilename);
+            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, uniqueFilename);
             Files.write(fileNameAndPath, profilePic.getBytes());
             student.setProfilePic(uniqueFilename);
         }
