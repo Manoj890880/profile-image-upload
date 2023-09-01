@@ -23,12 +23,15 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Controller
 @CrossOrigin(origins = "*")
 public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     private static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/webapp/imagedata";
 
@@ -48,7 +51,7 @@ public class StudentController {
         try {
             Files.write(fileNameAndPath, file.getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("An error occurred:", e);
             return "Error saving image file";
         }
 
